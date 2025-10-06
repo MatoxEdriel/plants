@@ -1,18 +1,20 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { Injectable } from '@nestjs/common';
 import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
+import { MessagePattern } from '@nestjs/microservices';
 
-@Controller('invoice')
+@Injectable()
 export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) {}
 
-  @Post()
-  create(@Body() createInvoiceDto: CreateInvoiceDto) {
-    return this.invoiceService.create(createInvoiceDto);
+  @MessagePattern({ cmd: 'create_invoice' })
+  async create(dto: CreateInvoiceDto) {
+    return this.invoiceService.create(dto);
   }
 
-  @Get()
-  findAll() {
+  @MessagePattern({ cmd: 'find_all_invoices' })
+  async findAllInvoices() {
     return this.invoiceService.findAll();
   }
 }
