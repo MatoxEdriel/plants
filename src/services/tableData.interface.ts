@@ -8,9 +8,9 @@ export type TableData = {
 
 
 export interface PdfOptions {
-  table?: TableData;       // Si se quiere generar tabla automáticamente
-  html?: string;           // HTML completo (si ya tienes diseño)
-  logoUrl?: string;        // Logo para encabezado
-  footerUrl?: string;      // Imagen de footer
-  title?: string;          // Título de la factura
+  table?: TableData;       
+  html?: string;           
+  logoUrl?: string;        
+  footerUrl?: string;     
+  title?: string;        
 }
