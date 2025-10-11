@@ -15,6 +15,8 @@ async function bootstrap() {
     },
   );
   await app.listen();
+
+  
   console.log(`Microservice on the port ${envs.port}`);
 }
 bootstrap();

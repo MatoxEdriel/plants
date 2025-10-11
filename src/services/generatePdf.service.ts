@@ -1,54 +1,56 @@
 import { Injectable } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
-import { TableData } from './tableData.interface';
+import { PdfOptions, TableData } from './tableData.interface';
 
 
 @Injectable()
 export class PdfGeneratorServices {
-  async generatePdfFromTable(table: TableData): Promise<Buffer> {
-    const headerBg = table.headerBgColor ?? '#f5f5f5';
-    const headerText = table.headerTextColor ?? '#000000';
-    const html = `
+  async generatePdf(options: PdfOptions): Promise<Buffer> {
+    let html = '';
+
+    if (options.table) {
+      const headerBg = options.table.headerBgColor ?? '#007bff';
+      const headerText = options.table.headerTextColor ?? '#fff';
+      html = `
       <html>
         <head>
           <style>
-            table { width: 100%; border-collapse: collapse; font-family: sans-serif; }
+            body { font-family: Arial, sans-serif; color: #333; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
             th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-            th { background: ${headerBg}; color: ${headerText}}
+            th { background-color: ${headerBg}; color: ${headerText}; }
           </style>
         </head>
         <body>
+          <h2>${options.title ?? 'Tabla de Datos'}</h2>
           <table>
             <thead>
               <tr>
-                ${table.columns.map(col => `<th>${col}</th>`).join('')}
+                ${options.table.columns.map(col => `<th>${col}</th>`).join('')}
               </tr>
             </thead>
             <tbody>
-              ${table.data.map(row => `
+              ${options.table.data.map(row => `
                 <tr>
-                  ${table.columns.map(col => `<td>${row[col] ?? ''}</td>`).join('')}
+                  ${options.table!.columns.map(col => `<td>${row[col] ?? ''}</td>`).join('')}
                 </tr>
               `).join('')}
             </tbody>
           </table>
         </body>
       </html>
-    `;
-    return this.generatePdfFromHtml(html);
-  }
+      `;
+    } else if (options.html) {
+      html = options.html;
+    } else {
+      throw new Error('Debe proporcionar tabla o HTML para generar PDF.');
+    }
 
-
-
-
-  async generatePdfFromHtml(html: string): Promise<Buffer> {
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    });
-
+    const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
     const page = await browser.newPage();
+
     await page.setContent(html, { waitUntil: 'domcontentloaded' });
+
     const pdf = await page.pdf({
       format: 'A4',
       printBackground: true,
@@ -58,7 +60,6 @@ export class PdfGeneratorServices {
     await browser.close();
     return Buffer.from(pdf);
   }
-
 
 
 

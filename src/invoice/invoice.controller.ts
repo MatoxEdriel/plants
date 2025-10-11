@@ -21,21 +21,11 @@ export class InvoiceController {
     return this.invoiceService.findAll();
   }
 
-
-  @MessagePattern({ cmd: 'download-pdf' })
-  async downloadPdf(@Payload() tableData: TableData) {
-    const pdfBuffer = await this.invoiceService.generatePdfFromFront(tableData);
-    return pdfBuffer;
-  }
-
-
-  @MessagePattern({ cmd: 'generate-pdf' })
-  async generatePdf(@Payload() html: string) {
-    const pdfBuffer = await this.invoiceService.generatePdfFromHtml(html);
-    return pdfBuffer;
-  }
-
-
+@MessagePattern({ cmd: 'generate-pdf' })
+async generatePdf(@Payload() options: any) {
+  const pdfBuffer = await this.invoiceService.generatePdf(options);
+  return pdfBuffer;
+}
 
 
 
