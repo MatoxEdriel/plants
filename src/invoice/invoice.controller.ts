@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
-import { InvoiceService } from './invoice.service';
+import { InvoiceService, InvoiceWithTracksDto } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import type { TableData } from 'src/services/tableData.interface';
@@ -29,4 +29,8 @@ async generatePdf(@Payload() options: any) {
 
 
 
+@MessagePattern({cmd: 'find_all_invoices_with_tracks'})
+async findAllInvoicesWithTracks(): Promise<InvoiceWithTracksDto[]>{
+  return this.invoiceService.findAllWithTracks();
+}
 }
