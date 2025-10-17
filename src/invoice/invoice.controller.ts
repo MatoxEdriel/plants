@@ -6,6 +6,7 @@ import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import type { TableData } from 'src/services/tableData.interface';
 import { table } from 'console';
+import { parseArgs } from 'util';
 
 @Injectable()
 export class InvoiceController {
@@ -17,20 +18,27 @@ export class InvoiceController {
   }
 
   @MessagePattern({ cmd: 'find_all_invoices' })
-  async findAllInvoices() {
-    return this.invoiceService.findAll();
+  async findAllInvoices(
+    @Payload() params: { page: number; limit: number; filter?: string },
+
+
+  ) {
+
+
+
+    return this.invoiceService.findAll(params);
   }
 
-@MessagePattern({ cmd: 'generate-pdf' })
-async generatePdf(@Payload() options: any) {
-  const pdfBuffer = await this.invoiceService.generatePdf(options);
-  return pdfBuffer;
-}
+  @MessagePattern({ cmd: 'generate-pdf' })
+  async generatePdf(@Payload() options: any) {
+    const pdfBuffer = await this.invoiceService.generatePdf(options);
+    return pdfBuffer;
+  }
 
 
 
-@MessagePattern({cmd: 'find_all_invoices_with_tracks'})
-async findAllInvoicesWithTracks(): Promise<InvoiceWithTracksDto[]>{
-  return this.invoiceService.findAllWithTracks();
-}
+  @MessagePattern({ cmd: 'find_all_invoices_with_tracks' })
+  async findAllInvoicesWithTracks(): Promise<InvoiceWithTracksDto[]> {
+    return this.invoiceService.findAllWithTracks();
+  }
 }

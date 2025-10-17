@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
-import { prisma } from '@novaCode/resource';
+import { prisma, PrismaClient } from '@novaCode/resource';
 import { plainToInstance } from 'class-transformer';
 import { PdfGeneratorServices } from 'src/services/generatePdf.service';
 import { PdfOptions } from 'src/services/tableData.interface';
@@ -13,7 +13,7 @@ export class InvoiceWithTracksDto {
   invoiceDate: Date;
   total: number;
   lines: {
-    trackName: string; 
+    trackName: string;
     composer?: string;
     unitPrice: number;
     quantity: number;
@@ -21,20 +21,51 @@ export class InvoiceWithTracksDto {
 }
 @Injectable()
 export class InvoiceService {
+  private prisma = new PrismaClient();
   constructor(private readonly pdfService: PdfGeneratorServices) { }
 
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
     const created = await prisma.invoice.create({ data: dto });
     return plainToInstance(Invoice, created);
   }
+async findAll(params: { page: number | string; limit: number | string; filter?: string }) {
+  const page = Number(params.page) || 1;
+  const limit = Number(params.limit) || 10;
+  const skip = (page - 1) * limit;
 
-  async findAll(): Promise<Invoice[]> {
-    const invoices = await prisma.invoice.findMany();
-    return invoices.map(inv => ({
-      ...inv,
-      total: inv.Total ?? null,
-    })) as Invoice[];
+    const where = params.filter
+      ? {
+        OR: [
+          { BillingCity: { contains: params.filter, mode: 'insensitive' } },
+          { BillingCountry: { contains: params.filter, mode: 'insensitive' } },
+        ],
+
+      }
+      : {};
+
+    const [data, total] = await this.prisma.$transaction([
+      this.prisma.invoice.findMany({
+        skip,
+        take: limit,
+        where,
+        orderBy: { InvoiceDate: 'desc' },
+
+
+      }),
+      this.prisma.invoice.count({ where }),
+
+
+    ]);
+    return {
+      data,
+      total,
+      totalPages: Math.ceil(total / limit),
+      page,
+    }
+
   }
+
+
 
   async findAllWithTracks(): Promise<InvoiceWithTracksDto[]> {
     const invoices = await prisma.invoice.findMany({
