@@ -13,7 +13,7 @@ export class InvoiceWithTracksDto {
   invoiceDate: Date;
   total: number;
   lines: {
-    trackName: string;
+    trackName: string; 
     composer?: string;
     unitPrice: number;
     quantity: number;

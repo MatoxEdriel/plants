@@ -24,7 +24,6 @@
     "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-express": "^11.0.1",
     "@novaCode/resource": "git+https://github.com/MatoxEdriel/Resource-library-matox.git",
-    "@prisma/client": "^6.16.3",
     "class-transformer": "^0.5.1",
     "dotenv": "^17.2.3",
     "joi": "^18.0.1",
