@@ -39,7 +39,6 @@ async findAll(params: { page: number | string; limit: number | string; filter?: 
           { BillingCity: { contains: params.filter, mode: 'insensitive' } },
           { BillingCountry: { contains: params.filter, mode: 'insensitive' } },
         ],
-
       }
       : {};
 
