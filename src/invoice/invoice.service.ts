@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
-import { prisma, PrismaClient } from '@novaCode/resource';
+import { PrismaClient } from '@novaCode/resource/prisma/client';
+import {PrismaService} from '@novaCode/resource/prisma/services';
 import { plainToInstance } from 'class-transformer';
 import { PdfGeneratorServices } from 'src/services/generatePdf.service';
 import { PdfOptions } from 'src/services/tableData.interface';
@@ -21,17 +22,18 @@ export class InvoiceWithTracksDto {
 }
 @Injectable()
 export class InvoiceService {
-  private prisma = new PrismaClient();
-  constructor(private readonly pdfService: PdfGeneratorServices) { }
+  constructor(private readonly pdfService: PdfGeneratorServices,
+    private readonly prisma : PrismaService
+  ) { }
 
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
-    const created = await prisma.invoice.create({ data: dto });
+    const created = this.prisma.invoice.create({ data: dto });
     return plainToInstance(Invoice, created);
   }
-async findAll(params: { page: number | string; limit: number | string; filter?: string }) {
-  const page = Number(params.page) || 1;
-  const limit = Number(params.limit) || 10;
-  const skip = (page - 1) * limit;
+  async findAll(params: { page: number | string; limit: number | string; filter?: string }) {
+    const page = Number(params.page) || 1;
+    const limit = Number(params.limit) || 10;
+    const skip = (page - 1) * limit;
 
     const where = params.filter
       ? {
@@ -67,7 +69,7 @@ async findAll(params: { page: number | string; limit: number | string; filter?: 
 
 
   async findAllWithTracks(): Promise<InvoiceWithTracksDto[]> {
-    const invoices = await prisma.invoice.findMany({
+    const invoices = await this.prisma.invoice.findMany({
       include: {
         InvoiceLine: {
           include: {
