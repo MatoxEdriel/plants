@@ -5,20 +5,9 @@ import { PrismaService } from '@novaCode/resource';
 import { plainToInstance } from 'class-transformer';
 import { PdfGeneratorServices } from 'src/services/generatePdf.service';
 import { PdfOptions } from 'src/services/tableData.interface';
-import { promises } from 'dns';
+import { InvoiceWithTracksDto } from './dto/invoice-with-tracks.dto';
 
-export class InvoiceWithTracksDto {
-  invoiceId: number;
-  customerId: number;
-  invoiceDate: Date;
-  total: number;
-  lines: {
-    trackName: string;
-    composer?: string;
-    unitPrice: number;
-    quantity: number;
-  }[];
-}
+
 @Injectable()
 export class InvoiceService {
   constructor(private readonly pdfService: PdfGeneratorServices,

@@ -1,8 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable prettier/prettier */
+
 import 'dotenv/config';
 import * as joi from 'joi';
+//
 
+//Es un ejemplo manual para validar las variablees de entorno y asi poder usarlos, el configsERVICE que te da nest js ya lo hace por ti, pero 
+//Es un buen ejemplo para hacerlo 
 interface EnvVars {
     PORT: number;
     DATABASE_URL: string;
@@ -15,7 +17,7 @@ const envsSchema = joi.object({
 
 
 const { error, value } = envsSchema.validate(process.env);
-if(error) {
+if (error) {
     throw new Error('Config validation error: ' + error.message);
 }
 

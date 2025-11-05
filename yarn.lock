@@ -378,6 +378,15 @@
     load-esm "1.0.3"
     tslib "2.8.1"
 
+"@nestjs/config@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/config/-/config-4.0.2.tgz#a2777a1fd2d0d594bab3953f50fbca95c14cce52"
+  integrity sha512-McMW6EXtpc8+CwTUwFdg6h7dYcBUpH5iUILCclAsa+MbCEvC9ZKu4dCHRlJqALuhjLw97pbQu62l4+wRwGeZqA==
+  dependencies:
+    dotenv "16.4.7"
+    dotenv-expand "12.0.1"
+    lodash "4.17.21"
+
 "@nestjs/core@^11.0.0", "@nestjs/core@^11.0.1":
   version "11.1.8"
   resolved "https://registry.yarnpkg.com/@nestjs/core/-/core-11.1.8.tgz#fb0d32f9d92e9396babb1e5d29a34727dbbe5285"
@@ -434,7 +443,7 @@
 
 "@novaCode/resource@git+https://github.com/MatoxEdriel/Resource-library-matox.git":
   version "1.0.0"
-  resolved "git+https://github.com/MatoxEdriel/Resource-library-matox.git#2ef2052374aac85c47ae7f8a68b6a55c0f7b70c4"
+  resolved "git+https://github.com/MatoxEdriel/Resource-library-matox.git#833371f363d7a5a8f74c11d7e18d87b8098b1c5b"
   dependencies:
     "@nestjs/common" "^11.1.8"
     "@nestjs/core" "^11.0.0"
@@ -1411,7 +1420,19 @@ devtools-protocol@0.0.1521046:
   resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.1521046.tgz#918e6175ea83100fefcb2b78779f15a77aa8a41b"
   integrity sha512-vhE6eymDQSKWUXwwA37NtTTVEzjtGVfDr3pRbsWEQ5onH/Snp2c+2xZHWJJawG/0hCCJLRGt4xVtEVUVILol4w==
 
-dotenv@^16.6.1:
+dotenv-expand@12.0.1:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-12.0.1.tgz#44bdfa204a368100689ec35d7385755f599ceeb1"
+  integrity sha512-LaKRbou8gt0RNID/9RoI+J2rvXsBRPMV7p+ElHlPhcSARbCPDYcYG2s1TIzAfWv4YSgyY5taidWzzs31lNV3yQ==
+  dependencies:
+    dotenv "^16.4.5"
+
+dotenv@16.4.7:
+  version "16.4.7"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.7.tgz#0e20c5b82950140aa99be360a8a5f52335f53c26"
+  integrity sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==
+
+dotenv@^16.4.5, dotenv@^16.6.1:
   version "16.6.1"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.6.1.tgz#773f0e69527a8315c7285d5ee73c4459d20a8020"
   integrity sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==
@@ -2105,7 +2126,7 @@ loader-runner@^4.2.0:
   resolved "https://registry.yarnpkg.com/loader-runner/-/loader-runner-4.3.1.tgz#6c76ed29b0ccce9af379208299f07f876de737e3"
   integrity sha512-IWqP2SCPhyVFTBtRcgMHdzlf9ul25NwaFx4wCEH/KjAXuuHY4yNjvPXsBokp8jCB936PyWRaPKUNh8NvylLp2Q==
 
-lodash@^4.17.21:
+lodash@4.17.21, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

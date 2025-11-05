@@ -1,35 +1,29 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
-import { InvoiceService, InvoiceWithTracksDto } from './invoice.service';
+import { InvoiceService } from './invoice.service';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import type { TableData } from 'src/services/tableData.interface';
-import { table } from 'console';
-import { parseArgs } from 'util';
+import { INVOICE_CMD } from '@novaCode/resource';
+import { InvoiceWithTracksDto } from './dto/invoice-with-tracks.dto';
+
+
 
 @Injectable()
 export class InvoiceController {
   constructor(private readonly invoiceService: InvoiceService) { }
 
-  @MessagePattern({ cmd: 'create_invoice' })
+  @MessagePattern(INVOICE_CMD.CREATE)
   async create(@Payload() dto: CreateInvoiceDto) {
     return this.invoiceService.create(dto);
   }
 
-  @MessagePattern({ cmd: 'find_all_invoices' })
+  @MessagePattern(INVOICE_CMD.FIND_ALL)
   async findAllInvoices(
     @Payload() params: { page: number; limit: number; filter?: string },
-
-
   ) {
-
-
-
     return this.invoiceService.findAll(params);
   }
 
-  @MessagePattern({ cmd: 'generate-pdf' })
+  @MessagePattern(INVOICE_CMD.GENERATE_PDF)
   async generatePdf(@Payload() options: any) {
     const pdfBuffer = await this.invoiceService.generatePdf(options);
     return pdfBuffer;
@@ -37,7 +31,7 @@ export class InvoiceController {
 
 
 
-  @MessagePattern({ cmd: 'find_all_invoices_with_tracks' })
+  @MessagePattern(INVOICE_CMD.FIND_ALL_WITH_TRACKS)
   async findAllInvoicesWithTracks(): Promise<InvoiceWithTracksDto[]> {
     return this.invoiceService.findAllWithTracks();
   }
