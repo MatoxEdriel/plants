@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
-import { PrismaClient } from '@novaCode/resource/prisma/client';
-import {PrismaService} from '@novaCode/resource/prisma/services';
+import { PrismaService } from '@novaCode/resource';
 import { plainToInstance } from 'class-transformer';
 import { PdfGeneratorServices } from 'src/services/generatePdf.service';
 import { PdfOptions } from 'src/services/tableData.interface';
@@ -23,7 +22,7 @@ export class InvoiceWithTracksDto {
 @Injectable()
 export class InvoiceService {
   constructor(private readonly pdfService: PdfGeneratorServices,
-    private readonly prisma : PrismaService
+    private readonly prisma: PrismaService
   ) { }
 
   async create(dto: CreateInvoiceDto): Promise<Invoice> {

@@ -2,8 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { envs } from './config';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { ExceptionFilter } from './common/exceptions/rpc.exception.filter';
-import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { HttpExceptionFilter } from '@novaCode/resource/filters/http.exception.filter';
+import { ExceptionFilter } from '@novaCode/resource';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -16,11 +16,11 @@ async function bootstrap() {
       },
     },
   );
-  app.useGlobalFilters(new ExceptionFilter());  
+  app.useGlobalFilters(new ExceptionFilter());
   app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen();
-  
-  
+
+
   console.log(`Microservice on the port ${envs.port}`);
 }
 bootstrap();

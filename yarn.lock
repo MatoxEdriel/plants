@@ -390,6 +390,11 @@
     path-to-regexp "8.3.0"
     tslib "2.8.1"
 
+"@nestjs/mapped-types@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/mapped-types/-/mapped-types-2.1.0.tgz#b9b536b7c3571567aa1d0223db8baa1a51505a19"
+  integrity sha512-W+n+rM69XsFdwORF11UqJahn4J3xi4g/ZEOlJNL6KoW5ygWSmBB2p0S2BZ4FQeS/NDH72e6xIcu35SfJnE8bXw==
+
 "@nestjs/microservices@^11.0.0", "@nestjs/microservices@^11.1.6":
   version "11.1.8"
   resolved "https://registry.yarnpkg.com/@nestjs/microservices/-/microservices-11.1.8.tgz#2b3b6280e3f7d164f0d9023c32663e64e84edbda"
@@ -429,7 +434,7 @@
 
 "@novaCode/resource@git+https://github.com/MatoxEdriel/Resource-library-matox.git":
   version "1.0.0"
-  resolved "git+https://github.com/MatoxEdriel/Resource-library-matox.git#e97238d7192551631b101c194277e2a8d33e333b"
+  resolved "git+https://github.com/MatoxEdriel/Resource-library-matox.git#2ef2052374aac85c47ae7f8a68b6a55c0f7b70c4"
   dependencies:
     "@nestjs/common" "^11.1.8"
     "@nestjs/core" "^11.0.0"
@@ -1444,9 +1449,9 @@ effect@3.18.4:
     fast-check "^3.23.1"
 
 electron-to-chromium@^1.5.238:
-  version "1.5.244"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.244.tgz#b9b61e3d24ef4203489951468614f2a360763820"
-  integrity sha512-OszpBN7xZX4vWMPJwB9illkN/znA8M36GQqQxi6MNy9axWxhOfJyZZJtSLQCpEFLHP2xK33BiWx9aIuIEXVCcw==
+  version "1.5.245"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.245.tgz#81aea81adf1e06b6f703b4b35ac6d543421d0fd9"
+  integrity sha512-rdmGfW47ZhL/oWEJAY4qxRtdly2B98ooTJ0pdEI4jhVLZ6tNf8fPtov2wS1IRKwFJT92le3x4Knxiwzl7cPPpQ==
 
 emoji-regex@^8.0.0:
   version "8.0.0"

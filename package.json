@@ -2,18 +2,19 @@
   "name": "plants",
   "version": "0.0.1",
   "private": true,
+  "module": "commonjs",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "yarn packages:upgrade && yarn prisma:init && nest build",
-    "start": "yarn packages:upgrade && yarn prisma:init && cross-env NODE_ENV=development nest start --watch",
+    "build": "yarn packages:upgrade && nest build",
+    "start": "cross-env NODE_ENV=development nest start --watch",
     "start:dev": "cross-env NODE_ENV=development nest start --watch",
     "start:prod": "cross-env NODE_ENV=production node dist/main",
-    "packages:upgrade": "yarn upgrade @novaCode/resource",
-    "prisma:init": "npx prisma generate --schema=./node_modules/@novaCode/resource/src/prisma/schema_postgres_base.prisma"
+    "packages:upgrade": "yarn upgrade @novaCode/resource"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/microservices": "^11.1.6",
     "@nestjs/platform-express": "^11.0.1",
     "@novaCode/resource": "git+https://github.com/MatoxEdriel/Resource-library-matox.git",
