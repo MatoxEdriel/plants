@@ -28,7 +28,7 @@ export class InvoiceService {
         OR: [
           { BillingCity: { contains: params.filter, mode: 'insensitive' } },
           { BillingCountry: { contains: params.filter, mode: 'insensitive' } },
-        ],
+        ], 
       }
       : {};
 
