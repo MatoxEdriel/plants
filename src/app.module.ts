@@ -5,9 +5,10 @@ import { PlantModule } from './plant/plant.module';
 import { InvoiceModule } from './invoice/invoice.module';
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
+import { CustomersModule } from './modules/customers/customers.module';
 
 @Module({
-  imports: [PlantModule, InvoiceModule,
+  imports: [PlantModule, InvoiceModule, CustomersModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',

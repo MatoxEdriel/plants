@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { number } from 'joi';
-import { contains } from 'class-validator';
+
 import { PrismaService } from '@novaCode/resource';
 
 @Injectable()
