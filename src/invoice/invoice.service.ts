@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
-import { PrismaService } from '@novaCode/resource';
+import { MICROSERVICE_RESPONSES, PrismaService,BaseMicroserviceStatusEnum,ManageResponse} from '@novaCode/resource';
 import { plainToInstance } from 'class-transformer';
 import { PdfGeneratorServices } from 'src/services/generatePdf.service';
 import { PdfOptions } from 'src/services/tableData.interface';
 import { InvoiceWithTracksDto } from './dto/invoice-with-tracks.dto';
-
 
 @Injectable()
 export class InvoiceService {
@@ -45,13 +44,26 @@ export class InvoiceService {
 
 
     ]);
-    return {
-      data,
-      total,
-      totalPages: Math.ceil(total / limit),
-      page,
-    }
 
+    const totalPages =  Math.ceil(total/limit);
+
+    
+    return ManageResponse.microservice(
+      {
+
+          data, 
+          page,
+          total,
+          totalPages
+      },
+      {
+        status: BaseMicroserviceStatusEnum.success, 
+        message: MICROSERVICE_RESPONSES.general.success
+
+      }
+
+    )
+   
   }
 
 
