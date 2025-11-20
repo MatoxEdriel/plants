@@ -1,69 +1,71 @@
 import { Injectable } from '@nestjs/common';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
 import { Invoice } from './entities/invoice.entity';
-import { MICROSERVICE_RESPONSES, PrismaService,BaseMicroserviceStatusEnum,ManageResponse} from '@novaCode/resource';
+import { MICROSERVICE_RESPONSES, PrismaService, BaseMicroserviceStatusEnum, ManageResponse } from '@novaCode/resource';
 import { plainToInstance } from 'class-transformer';
 import { PdfGeneratorServices } from 'src/services/generatePdf.service';
 import { PdfOptions } from 'src/services/tableData.interface';
 import { InvoiceWithTracksDto } from './dto/invoice-with-tracks.dto';
+import { PaginationParams } from 'src/interfaces/PaginationParams.interface';
+import { BaseService } from 'src/interfaces/BaseService';
 
 @Injectable()
-export class InvoiceService {
-  constructor(private readonly pdfService: PdfGeneratorServices,
-    private readonly prisma: PrismaService
-  ) { }
+export class InvoiceService extends BaseService<any> {
+
+  constructor(
+    private readonly pdfService: PdfGeneratorServices,
+    protected readonly prisma: PrismaService
+  ) {
+    super(prisma, prisma.invoice)
+  }
 
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
     const created = this.prisma.invoice.create({ data: dto });
     return plainToInstance(Invoice, created);
   }
-  async findAll(params: { page: number | string; limit: number | string; filter?: string }) {
-    const page = Number(params.page) || 1;
-    const limit = Number(params.limit) || 10;
-    const skip = (page - 1) * limit;
+
+
+  async findAll(params: PaginationParams) {
 
     const where = params.filter
       ? {
         OR: [
           { BillingCity: { contains: params.filter, mode: 'insensitive' } },
           { BillingCountry: { contains: params.filter, mode: 'insensitive' } },
-        ], 
+        ],
       }
       : {};
 
-    const [data, total] = await this.prisma.$transaction([
-      this.prisma.invoice.findMany({
-        skip,
-        take: limit,
-        where,
-        orderBy: { InvoiceDate: 'desc' },
+    const result = await this.paginate({
+      page: params.page,
+      limit: params.limit,
+      where,
+      orderBy: { InvoiceId: 'desc' }
 
+    })
 
-      }),
-      this.prisma.invoice.count({ where }),
-
-
-    ]);
-
-    const totalPages =  Math.ceil(total/limit);
-
-    
-    return ManageResponse.microservice(
+    return ManageResponse.microservice({
+      data: result.data,
+      page: result.page,
+      total: result.total,
+      totalPage: result.totalPages
+    },
       {
-
-          data, 
-          page,
-          total,
-          totalPages
-      },
-      {
-        status: BaseMicroserviceStatusEnum.success, 
+        status: BaseMicroserviceStatusEnum.success,
         message: MICROSERVICE_RESPONSES.general.success
 
       }
-
     )
-   
+
+
+
+
+
+
+
+
+
+
   }
 
 

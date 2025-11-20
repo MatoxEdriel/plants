@@ -33,6 +33,7 @@ export class CustomersService extends BaseService<any> {
 
     const result = await this.paginate({
       page: params.page,
+    
       limit: params.limit,
       where,
       orderBy: { CustomerId: 'desc' }
