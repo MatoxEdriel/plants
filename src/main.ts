@@ -2,23 +2,35 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { envs } from './config';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { HttpExceptionFilter } from '@novaCode/resource/filters/http.exception.filter';
-import { ExceptionFilter } from '@novaCode/resource';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.TCP,
-      options: {
-        host: '0.0.0.0',
-        port: envs.port,
-      },
+
+  //!color rojo
+  //? Color azul 
+  //Explicacion con mi entendimineto 
+  const app = await NestFactory.create(AppModule);
+
+  const configService = app.get(ConfigService);
+
+
+  //const app = await NestFactory.createApplicationContext<MicroserviceOptions>(
+  const port = configService.get<number>('PORT');
+  const host = '0.0.0.0';
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.TCP,
+    options: {
+      host,
+      port,
     },
-  );
-  await app.listen();
+  });
+
+  await app.startAllMicroservices();
 
 
-  console.log(`Microservice on the port ${envs.port}`);
+
+
+  console.log(`Microservice on the port ${host}:${port}`);
 }
 bootstrap();

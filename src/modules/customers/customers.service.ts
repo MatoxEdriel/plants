@@ -12,11 +12,7 @@ export class CustomersService extends BaseService<any> {
   constructor(
     protected readonly prisma: PrismaService
   ) {
-
     super(prisma, prisma.customer);
-
-
-
   }
 
   async findAll(params: PaginationParams) {
@@ -33,7 +29,6 @@ export class CustomersService extends BaseService<any> {
 
     const result = await this.paginate({
       page: params.page,
-    
       limit: params.limit,
       where,
       orderBy: { CustomerId: 'desc' }
@@ -58,15 +53,14 @@ export class CustomersService extends BaseService<any> {
   create(createCustomerDto: CreateCustomerDto) {
     return 'This action adds a new customer';
   }
-
-
+  
 
   findOne(id: number) {
     return `This action returns a #${id} customer`;
   }
 
   update(id: number, updateCustomerDto: UpdateCustomerDto) {
-    return `This action updates a #${id} customer`;
+    return `This action updates a #${id} customer`       ;
   }
 
   remove(id: number) {
