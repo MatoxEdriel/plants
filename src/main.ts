@@ -6,15 +6,12 @@ import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
 
-  //!color rojo
-  //? Color azul 
-  //Explicacion con mi entendimineto 
+
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
 
 
-  //const app = await NestFactory.createApplicationContext<MicroserviceOptions>(
   const port = configService.get<number>('PORT');
   const host = '0.0.0.0';
 
