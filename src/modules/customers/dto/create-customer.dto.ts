@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 
 
 
-//Nest recibe los valores del body como strings  
+//Nest recibe los valores del body como strings 
 export class CreateCustomerDto {
 
 
@@ -21,7 +21,7 @@ export class CreateCustomerDto {
     @Type(() => Number)
     @IsNumber()
     @IsNotEmpty({ message: 'This company ID is required' })
-    CompanyId: number;
+    Company: string;
 
     @IsString()
     @IsOptional()

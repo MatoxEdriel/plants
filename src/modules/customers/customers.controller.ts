@@ -36,4 +36,8 @@ export class CustomersController {
   remove(@Payload() id: number) {
     return this.customersService.remove(id);
   }
+
+
+
+
 }
