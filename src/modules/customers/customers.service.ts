@@ -35,16 +35,19 @@ export class CustomersService extends BaseService<any> {
       where,
       orderBy: { CustomerId: 'desc' }
     })
-    return ManageResponse.microservice({
-      data: result.data,
 
+    const responsePayload = {
+      items: result.data,
       pagination: {
         page: result.page,
+        limit: params.limit,
         total: result.total,
-        totalpages: result.totalPages
-      },
+        totalPage: result.totalPages
+      }
+    }
 
-    },
+    return ManageResponse.microservice(
+      responsePayload,
       {
         status: BaseMicroserviceStatusEnum.success,
         message: MICROSERVICE_RESPONSES.general.success
@@ -79,7 +82,7 @@ export class CustomersService extends BaseService<any> {
 
 
 
- 
+
   }
 
 
