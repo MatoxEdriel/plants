@@ -28,9 +28,11 @@ export class CustomersController {
   }
 
   @MessagePattern(CUSTOMER_CMD.UPDATE)
-  update(@Payload() updateCustomerDto: UpdateCustomerDto) {
-    return this.customersService.update(updateCustomerDto.id, updateCustomerDto);
+  update(@Payload() payload: { id: number; data: UpdateCustomerDto }) {
+    return this.customersService.update(payload.id, payload.data);
   }
+
+
 
   @MessagePattern(CUSTOMER_CMD.DELETE)
   remove(@Payload() id: number) {

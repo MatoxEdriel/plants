@@ -108,21 +108,23 @@ export class CustomersService extends BaseService<any> {
   }
 
   async update(id: number, updateCustomerDto: UpdateCustomerDto) {
-
     await this.findOneOrThrow(id);
 
+    //Usar metodo desde el resoruce 
+    
+    const data = Object.fromEntries(
+      Object.entries(updateCustomerDto).filter(([_, v]) => v !== undefined)
+    );
     const customerUpdated = await this.prisma.customer.update({
       where: {
         CustomerId: id
       },
-      data: updateCustomerDto,
+      data,
       select: {
         FirstName: true,
         LastName: true,
         Address: true,
-
       }
-
     })
     return ManageResponse.microservice(
       { data: customerUpdated },
