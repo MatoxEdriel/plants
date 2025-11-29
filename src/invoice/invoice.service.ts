@@ -18,7 +18,7 @@ export class InvoiceService extends BaseService<any> {
   ) {
     super(prisma, prisma.invoice)
   }
-ß
+  ß
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
     const created = this.prisma.invoice.create({ data: dto });
     return plainToInstance(Invoice, created);
@@ -44,12 +44,20 @@ export class InvoiceService extends BaseService<any> {
 
     })
 
-    return ManageResponse.microservice({
-      data: result.data,
-      page: result.page,
-      total: result.total,
-      totalPage: result.totalPages
-    },
+
+    const responsePayload = {
+      items: result.data,
+      pagination: {
+        page: result.page,
+        limit: params.limit,
+        total: result.total,
+        totalPage: result.totalPages
+      }
+    };
+
+    return ManageResponse.microservice(
+      responsePayload
+      ,
       {
         status: BaseMicroserviceStatusEnum.success,
         message: MICROSERVICE_RESPONSES.general.success

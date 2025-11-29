@@ -6,6 +6,7 @@ import { BaseMicroserviceStatusEnum, ManageResponse, MICROSERVICE_RESPONSES, Pri
 import { BaseService } from 'src/interfaces/BaseService';
 import { PaginationParams } from 'src/interfaces/PaginationParams.interface';
 import { exist } from 'joi';
+import { totalmem } from 'os';
 
 @Injectable()
 export class CustomersService extends BaseService<any> {
@@ -36,13 +37,17 @@ export class CustomersService extends BaseService<any> {
     })
     return ManageResponse.microservice({
       data: result.data,
-      page: result.page,
-      total: result.total,
-      totalPage: result.totalPages
+
+      pagination: {
+        page: result.page,
+        total: result.total,
+        totalpages: result.totalPages
+      },
+
     },
       {
         status: BaseMicroserviceStatusEnum.success,
-        messsage: MICROSERVICE_RESPONSES.general.success
+        message: MICROSERVICE_RESPONSES.general.success
 
       }
     )
@@ -67,14 +72,14 @@ export class CustomersService extends BaseService<any> {
       { data: customer },
       {
         status: BaseMicroserviceStatusEnum.success,
-        messsage: MICROSERVICE_RESPONSES.general.success,
+        message: MICROSERVICE_RESPONSES.general.success,
       },
     );
 
 
 
 
-
+ 
   }
 
 
@@ -111,7 +116,6 @@ export class CustomersService extends BaseService<any> {
     await this.findOneOrThrow(id);
 
     //Usar metodo desde el resoruce 
-    
     const data = Object.fromEntries(
       Object.entries(updateCustomerDto).filter(([_, v]) => v !== undefined)
     );
@@ -130,7 +134,7 @@ export class CustomersService extends BaseService<any> {
       { data: customerUpdated },
       {
         status: BaseMicroserviceStatusEnum.success,
-        messsage: MICROSERVICE_RESPONSES.general.success,
+        message: MICROSERVICE_RESPONSES.general.success,
       },
     );
   }
