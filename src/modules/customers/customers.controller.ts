@@ -24,7 +24,7 @@ export class CustomersController {
 
   @MessagePattern(CUSTOMER_CMD.FIND_ONE_CUSTOMER)
   findOne(@Payload() id: number) {
-    return this.customersService.findOne(id);
+    return this.customersService.findOneOrThrow(id);
   }
 
   @MessagePattern(CUSTOMER_CMD.UPDATE)

@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 import { BaseMicroserviceStatusEnum, ManageResponse, MICROSERVICE_RESPONSES, PrismaService } from '@novaCode/resource';
 import { BaseService } from 'src/interfaces/BaseService';
 import { PaginationParams } from 'src/interfaces/PaginationParams.interface';
+import { exist } from 'joi';
 
 @Injectable()
 export class CustomersService extends BaseService<any> {
@@ -50,17 +51,18 @@ export class CustomersService extends BaseService<any> {
 
 
 
+  //Practiquemos el update 
+
+
+
+
+
   async create(Payload: CreateCustomerDto) {
     const customer = await this.prisma.customer.create({
-
       data: {
         ...Payload
-
-
       }
-
     });
-
     return ManageResponse.microservice(
       { data: customer },
       {
@@ -78,12 +80,57 @@ export class CustomersService extends BaseService<any> {
 
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} customer`;
+
+
+
+
+  //ok primero debemos revisar que datos se pueda cambiar
+  //!Recuerda Gabriel que hay datos que si o si se deben enviar para el input
+  //? en este caso vimos datos not null
+
+
+  async findOneOrThrow(id: number) {
+    const existCustomer = await this.prisma.customer.findUnique({
+      where: {
+        CustomerId: id
+      },
+      select: {
+        CustomerId: true
+      }
+    })
+
+    if (!existCustomer) {
+
+      throw new NotFoundException(`Id ${id} is not founder`)
+    }
+
+    return existCustomer;
   }
 
-  update(id: number, updateCustomerDto: UpdateCustomerDto) {
-    return `This action updates a #${id} customer`;
+  async update(id: number, updateCustomerDto: UpdateCustomerDto) {
+
+    await this.findOneOrThrow(id);
+
+    const customerUpdated = await this.prisma.customer.update({
+      where: {
+        CustomerId: id
+      },
+      data: updateCustomerDto,
+      select: {
+        FirstName: true,
+        LastName: true,
+        Address: true,
+
+      }
+
+    })
+    return ManageResponse.microservice(
+      { data: customerUpdated },
+      {
+        status: BaseMicroserviceStatusEnum.success,
+        messsage: MICROSERVICE_RESPONSES.general.success,
+      },
+    );
   }
 
   remove(id: number) {

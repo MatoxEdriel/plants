@@ -18,7 +18,7 @@ export class InvoiceService extends BaseService<any> {
   ) {
     super(prisma, prisma.invoice)
   }
-
+ß
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
     const created = this.prisma.invoice.create({ data: dto });
     return plainToInstance(Invoice, created);
