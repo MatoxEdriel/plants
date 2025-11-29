@@ -50,17 +50,41 @@ export class CustomersService extends BaseService<any> {
 
 
 
-  create(createCustomerDto: CreateCustomerDto) {
-    return 'This action adds a new customer';
+  async create(Payload: CreateCustomerDto) {
+    const customer = await this.prisma.customer.create({
+
+      data: {
+        ...Payload
+
+
+
+      }
+
+    });
+
+    return ManageResponse.microservice(
+      { data: customer },
+      {
+        status: BaseMicroserviceStatusEnum.success,
+        messsage: MICROSERVICE_RESPONSES.general.success,
+      },
+    );
+
+
+
+
+
   }
-  
+
+
+
 
   findOne(id: number) {
     return `This action returns a #${id} customer`;
   }
 
   update(id: number, updateCustomerDto: UpdateCustomerDto) {
-    return `This action updates a #${id} customer`       ;
+    return `This action updates a #${id} customer`;
   }
 
   remove(id: number) {
