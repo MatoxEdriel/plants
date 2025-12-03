@@ -35,9 +35,10 @@ export class CustomersController {
 
 
   @MessagePattern(CUSTOMER_CMD.DELETE)
-  remove(@Payload() id: number) {
-    return this.customersService.remove(id);
+  remove(@Payload() payload: { id: number }) {
+    return this.customersService.delete(payload.id);
   }
+
 
 
 

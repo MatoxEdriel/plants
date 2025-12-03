@@ -62,6 +62,28 @@ export class CustomersService extends BaseService<any> {
   //Practiquemos el update 
 
 
+  //!Practicar del Softdelete 
+
+
+  async delete(id: number) {
+    //? primero verificaremos si existe el local 
+
+    //!ponemos el nuevo metodo que sirve para  verificar su existencia
+    await this.findOneOrThrow(id);
+
+    const customerDeleted = await this.prisma.customer.delete({
+      where: {
+        CustomerId: id
+      }
+    });
+    return ManageResponse.microservice(
+      { item: customerDeleted },
+      {
+        status: BaseMicroserviceStatusEnum.success,
+        message: MICROSERVICE_RESPONSES.general.success,
+      },
+    );
+  }
 
 
 
@@ -72,7 +94,7 @@ export class CustomersService extends BaseService<any> {
       }
     });
     return ManageResponse.microservice(
-      { data: customer },
+      { item: customer },
       {
         status: BaseMicroserviceStatusEnum.success,
         message: MICROSERVICE_RESPONSES.general.success,
