@@ -12,6 +12,14 @@ import { BaseService } from 'src/interfaces/BaseService';
 @Injectable()
 export class InvoiceService extends BaseService<any> {
 
+  awards: any[] = [
+    { threshold: 100, award: 'Bronze' },
+    { threshold: 500, award: 'Silver' },
+    { threshold: 1000, award: 'Gold' }  
+
+
+  ];
+
   constructor(
     private readonly pdfService: PdfGeneratorServices,
     protected readonly prisma: PrismaService
@@ -81,10 +89,10 @@ export class InvoiceService extends BaseService<any> {
 
 
 
-  async showTotalInvoicesCustomer(customerId: number){
+public showTotalInvoicesCustomer(customerId: number){
    // primero obtengo esto el id en cuestion leugo cvamos asumar 
   //con este metodo puedes hacer calculos matematicos 
-    const totalInvoices = await this.prisma.invoice.aggregate({
+    const totalInvoices =  this.prisma.invoice.aggregate({
       where: {
         CustomerId: customerId
       },
@@ -94,6 +102,23 @@ export class InvoiceService extends BaseService<any> {
       }
     })
   }
+
+
+
+ ///Repasar cuado se pone el promise 
+ //!Por ejemplo esto me va a arrojar si es un ganaro si alcanzo la meta 
+
+  async isEarnAward(customerId: number): Promise<any> {
+    //Me deuvlve que gano  entonces eso me da un total 
+    const totalInvoices = this.showTotalInvoicesCustomer(customerId)
+
+    if(totalInvoices! >= 200){
+      return 'Gold Award'
+    }
+
+
+  }
+
 
 
 
