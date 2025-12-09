@@ -29,6 +29,8 @@ export class InvoiceController {
     return pdfBuffer;
   }
 
+  
+
 
 
   @MessagePattern(INVOICE_CMD.FIND_ALL_WITH_TRACKS)

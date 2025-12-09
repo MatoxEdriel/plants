@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { PlantModule } from './plant/plant.module';
-import { InvoiceModule } from './invoice/invoice.module';
+import { PlantModule } from './modules/plant/plant.module';
+import { InvoiceModule } from './modules/invoice/invoice.module';
 import { ConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 import { CustomersModule } from './modules/customers/customers.module';
@@ -18,7 +16,7 @@ import { CustomersModule } from './modules/customers/customers.module';
       })
     })
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule { }

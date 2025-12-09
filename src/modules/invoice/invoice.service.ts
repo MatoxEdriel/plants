@@ -18,7 +18,7 @@ export class InvoiceService extends BaseService<any> {
   ) {
     super(prisma, prisma.invoice)
   }
-  ß
+  
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
     const created = this.prisma.invoice.create({ data: dto });
     return plainToInstance(Invoice, created);
@@ -33,6 +33,7 @@ export class InvoiceService extends BaseService<any> {
           { BillingCity: { contains: params.filter, mode: 'insensitive' } },
           { BillingCountry: { contains: params.filter, mode: 'insensitive' } },
         ],
+
       }
       : {};
 
@@ -43,6 +44,8 @@ export class InvoiceService extends BaseService<any> {
       orderBy: { InvoiceId: 'desc' }
 
     })
+
+
 
 
     const responsePayload = {
@@ -74,6 +77,22 @@ export class InvoiceService extends BaseService<any> {
 
 
 
+  }
+
+
+
+  async showTotalInvoicesCustomer(customerId: number){
+   // primero obtengo esto el id en cuestion leugo cvamos asumar 
+  //con este metodo puedes hacer calculos matematicos 
+    const totalInvoices = await this.prisma.invoice.aggregate({
+      where: {
+        CustomerId: customerId
+      },
+      _sum : {
+        //con esto sumas el total de la columna 
+        Total: true
+      }
+    })
   }
 
 
