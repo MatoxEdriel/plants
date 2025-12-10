@@ -33,6 +33,48 @@ export class InvoiceService extends BaseService<any> {
   }
 
 
+
+  //Traer toda la ifnormaicondeujn client epor customer iD
+
+  async getCustomerByInvoicesId(customerId: number): Promise<any> {
+
+    //  Necesito traer la informaicon cokpleta de ahi tengo el id y busco ese
+    // 
+    const customerData = await this.prisma.invoice.findFirst({
+      where: {
+        CustomerId: customerId
+      },
+      include: {
+        //Detecta el id relacionad ay trae dl mismo elnombre de al tabla
+        Customer: true
+      }
+    })
+    return customerData?.Customer;
+  }
+
+
+  //Practica devolver todos los IDs de la facturas 
+  async getAllIdsInvoices(): Promise<number[]> {
+
+    //!Primero debo traer los ids primero 
+    const allInvoices = await this.prisma.invoice.findMany({
+      select: {
+        InvoiceId: true
+
+      },
+      distinct: ['InvoiceId']
+
+    })
+
+    const allInvoicesIds = allInvoices.map((invoices) => invoices.InvoiceId)
+
+    return allInvoicesIds
+
+
+  }
+
+
+
   async findAll(params: PaginationParams) {
 
     const where = params.filter
@@ -86,6 +128,10 @@ export class InvoiceService extends BaseService<any> {
 
 
   }
+
+
+
+
 
 
 
