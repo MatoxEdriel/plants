@@ -15,7 +15,7 @@ export class InvoiceService extends BaseService<any> {
   awards: any[] = [
     { threshold: 100, award: 'Bronze' },
     { threshold: 500, award: 'Silver' },
-    { threshold: 1000, award: 'Gold' }  
+    { threshold: 1000, award: 'Gold' }
 
 
   ];
@@ -26,7 +26,7 @@ export class InvoiceService extends BaseService<any> {
   ) {
     super(prisma, prisma.invoice)
   }
-  
+
   async create(dto: CreateInvoiceDto): Promise<Invoice> {
     const created = this.prisma.invoice.create({ data: dto });
     return plainToInstance(Invoice, created);
@@ -89,14 +89,36 @@ export class InvoiceService extends BaseService<any> {
 
 
 
-public showTotalInvoicesCustomer(customerId: number){
-   // primero obtengo esto el id en cuestion leugo cvamos asumar 
-  //con este metodo puedes hacer calculos matematicos 
-    const totalInvoices =  this.prisma.invoice.aggregate({
+  //TODO: Practicar ahora revisraremos un metodo. traere todo slos customerId 
+  //!PRIMERO es traer el array 
+
+  //Practica traer todos los CustomersId de las facturas 
+  public async showAllInvoicesCustomerId() {
+
+    const allCustomerIda = await this.prisma.invoice.findMany({
+      select: {
+        CustomerId: true
+      },
+      distinct: ['CustomerId']
+    })
+
+    const allInvoicesId = allCustomerIda.map((p) => p.CustomerId);
+
+    return allInvoicesId;
+
+
+  }
+
+
+
+  public showTotalInvoicesCustomer(customerId: number) {
+    // primero obtengo esto el id en cuestion leugo cvamos asumar 
+    //con este metodo puedes hacer calculos matematicos 
+    const totalInvoices = this.prisma.invoice.aggregate({
       where: {
         CustomerId: customerId
       },
-      _sum : {
+      _sum: {
         //con esto sumas el total de la columna 
         Total: true
       }
@@ -105,14 +127,14 @@ public showTotalInvoicesCustomer(customerId: number){
 
 
 
- ///Repasar cuado se pone el promise 
- //!Por ejemplo esto me va a arrojar si es un ganaro si alcanzo la meta 
+  ///Repasar cuado se pone el promise 
+  //!Por ejemplo esto me va a arrojar si es un ganaro si alcanzo la meta 
 
   async isEarnAward(customerId: number): Promise<any> {
     //Me deuvlve que gano  entonces eso me da un total 
     const totalInvoices = this.showTotalInvoicesCustomer(customerId)
 
-    if(totalInvoices! >= 200){
+    if (totalInvoices! >= 200) {
       return 'Gold Award'
     }
 
